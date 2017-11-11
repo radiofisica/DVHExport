@@ -1,31 +1,32 @@
 #!/bin/csh
 # DVH Ausgabe
 # Bj 03.2005
+# preparada nueva docuemntacion al pasar a Pinnacle centralizado
+# apr 20171110
+
+# 1. se definen los path y ficheros de importacion y exportacion
 
 set outScript = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/DVHExport.Script.auto"
 set Import = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.txt"
 set Pfad = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp"
 
-# delete old Data
+# 2. se borran los datos antiguos anteriores
+
  if (-e $Pfad/DVH.Data.0.txt ) rm $Pfad/DVH.Data*
-#if (-e $Pfad/DVH.Data.0.txt ) rm $Pfad/DVH*
-if (-e $outScript ) rm $outScript
+ if (-e $outScript ) rm $outScript
 
-# List of ROI Names
-# cat $Import | grep RegionOfInterestName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Name.csv
+# 2. Se obtiene la lista de los nombres de los volumenes de interes y de los Trials a los que pertenecen
+
 cat $Import | grep RegionOfInterestName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Name.txt
-
-# Liste der Trial Namen
-# cat $Import | grep TrialName | cut -f2 -d\" > //usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/Trial.Name.csv
 cat $Import | grep TrialName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/Trial.Name.txt
 
 
 
-#find Number of ROI
+# 3. Utilizamos el comando grep para contar el numero de ROIs 
 @ Anzahl = `grep -c RegionOfInterestName $Import`
 
 
-# write outputscript
+# 4. Se construye el script personalizado para la exportacion volcando a un fichero de texto l a salida de la consola
 
 echo "DVHPlotStyle .CumulativeY = 1 ;" > $outScript
 echo "DVHPlotStyle .NormalizeX = 0;" > $outScript
@@ -41,5 +42,6 @@ while ($Anzahl > 0)
         echo ' DVHList.Current.Data.Save =  "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Data.'$Anzahl'.txt" ;' >> $outScript
 end
 
+# 5. Borramos el fichero temporal inicial
 
 rm $Import
