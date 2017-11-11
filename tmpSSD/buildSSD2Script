@@ -1,0 +1,13 @@
+#!/bin/csh
+# Exportar las distancias SSD a cero grados
+# APerezRozos Julio 2007
+# Borra temporales y extrae los datos necesarios
+
+set outScript = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/SSDExport.Script.auto"
+set Import = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/PoiList.txt"
+set Pfad = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD"
+
+grep String /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/SSDFile.txt | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/ListaSSD.txt
+
+ rm $Pfad/SSD*
+ rm $Import

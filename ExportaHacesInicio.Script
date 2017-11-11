@@ -1,0 +1,88 @@
+// --------------------------------------------------------
+//      Exportacion campos de tratamiento:
+//	*  Leemos los datos generales del haz
+//	*  Volcamos al fichero de salida los datos del haz
+//	*  Reseteamos variables
+//	A.PerezRozos 2013 - HUVV
+// --------------------------------------------------------
+// Este Script se inicia con ExportaHacesInicio.Script
+// luego llamara a ExportaHacesGeneral.Script
+// y finaliza con el Script de UNIX ExportaHacesUnix
+// --------------------------------------------------------
+// 
+//
+// Genera archivos temporales en ese directorio que posteriormente son borrados por el script
+// (AADatosHaces.txt, AADatosUnHaz.txt, AAAdatos.txt)
+
+WaitMessage = "EXPORTANDO DATOS DE CAMPOS - POR FAVOR ESPERE A QUE FINALICE EL SCRIPT";
+
+TrialList.Current.BeginMessageBatch = "";
+
+//Se crean las variables de almacenamiento
+Store.At.MySaveFile = SimpleString{};
+Store.At.MySaveFile.String = "/home/pinnmalaga/PRESCRIPCIONES/dc";
+Store.At.MySaveFile.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.MySaveFile.AppendString = ".txt";
+
+// Se borra la exportacion de cualquier paciente anterior
+Store.At.BorraAnterior = SimpleString{};
+Store.At.BorraAnterior.String = "rm ";
+Store.At.BorraAnterior.AppendString = Store.At.MySaveFile.String;
+SpawnCommand=  "rm /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt";
+SpawnCommand=  "rm /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt";
+SpawnCommand=  "rm /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AAAdatos.txt";
+SpawnCommand=  Store.At.BorraAnterior.String;
+
+// Guardamos la identificacion del paciente
+Store.At.MySaveFile.Save = "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt";
+Store.StringAt.patname = PlanInfo.MedicalRecordNumber;
+Store.At.patname.AppendString = "*";
+Store.At.patname.AppendString = PlanInfo.LastName;
+Store.At.patname.AppendString = " , ";
+Store.At.patname.AppendString = PlanInfo.FirstName;
+// Incorporamos otros datos estadisticos
+Store.At.patname.AppendString = "*";
+Store.At.patname.AppendString = PlanInfo.Physician;
+Store.At.patname.AppendString = "*";
+Store.At.patname.AppendString = PlanInfo.Planner;
+Store.At.patname.AppendString = "*";
+Store.At.patname.AppendString = PlanInfo.PlanPath;
+Store.At.patname.AppendString = "*";
+
+
+Store.At.patname.Save= "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt";
+SpawnCommand = "cat  /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt >> /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt";
+
+
+TrialList.Current.BeamList.ChildrenEachCurrent.#"@".Script.ExecuteNow = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/ExportaHacesGeneral.Script";
+
+
+//
+//Invocamops un script para formatear el fichero de salida y posteriormente renombrar el fichero con un nombre decente
+//
+
+SpawnCommand=  "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/ExportaHacesUnix";
+
+//
+// el nombre de salida sera dc+NHistoria.txt
+// Es un archivo de datos separados por asteriscos (*)
+//
+
+Store.At.Renombrar = SimpleString{};
+Store.At.Renombrar.String = "cp /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AAAdatos.txt ";
+Store.At.Renombrar.AppendString = Store.At.MySaveFile.String;
+SpawnCommand= Store.At.Renombrar.String;
+
+//Borramos ficheros inservibles
+SpawnCommand=  "rm /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt";
+SpawnCommand=  "rm /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt";
+SpawnCommand=  "rm //usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AAAdatos.txt";
+
+
+TrialList.Current.EndMessageBatch = "";
+WaitMessageOff ="";
+
+
+
+
+

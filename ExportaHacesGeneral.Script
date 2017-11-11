@@ -1,0 +1,182 @@
+//APerezRozos
+//--------------------------------------------------------
+//      Exportacion campos de tratamiento:
+//	*  Leemos los datos generales del haz
+//	*  Volcamos al fichero de salida los datos del haz
+//	*  Reseteamos variables
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Este Script se inicia con ExportaHacesInicio.Script
+// que llama a este script ExportaHacesGeneral.Script
+// y tras volver finaliza con el Script de UNIX ExportaHacesUnix
+// -------------------------------------------------------
+
+
+Store.FreeAt.DatosCampo = "";
+Store.StringAt.DatosCampo ="*";
+
+Store.StringAt.nombreCampo = TrialList.Current.BeamList.Current.Name;
+//WarningMessage = Store.At.nombreCampo.Value;
+
+Store.StringAt.tipoCampo = TrialList.Current.BeamList.Current.BeamType;
+Store.StringAt.nombreale = TrialList.Current.BeamList.Current.MachineName;
+
+Store.StringAt.energia = TrialList.Current.BeamList.Current.MachineEnergy.Name;
+//WarningMessage = Store.At.energia.Value;
+
+Store.StringAt.prescripName=TrialList.Current.BeamList.Current.Prescription.Name;
+//WarningMessage = Store.At.prescripName.Value;
+
+Store.StringAt.isocentro = TrialList.Current.BeamList.Current.Isocenter.Name;
+//WarningMessage = Store.At.isocentro.Value;
+
+Store.StringAt.prescrippoint = TrialList.Current.BeamList.Current.PrescriptionPointName.Value;
+//WarningMessage = Store.At.prescrippoint.Value;
+
+Store.StringAt.gantryangle = TrialList.Current.BeamList.Current.Gantry.Value;
+Store.StringAt.gantryanglestop = TrialList.Current.BeamList.Current.GantryStop.Value;
+//WarningMessage = Store.At.gantryangle.Value;
+
+Store.StringAt.collangle = TrialList .Current .BeamList .Current .Collimator.Value;
+//WarningMessage = Store.At.collangle.Value;
+
+Store.StringAt.couchangle= TrialList .Current .BeamList .Current .Couch.Value;
+//WarningMessage = Store.At.couchangle.Value;
+
+Store.StringAt.y1 = TrialList .Current .BeamList .Current .LeftJawPosition.Value;
+Store.StringAt.y2 = TrialList .Current .BeamList .Current .RightJawPosition.Value;
+Store.StringAt.x1 = TrialList .Current .BeamList .Current .TopJawPosition.Value;
+Store.StringAt.x2 = TrialList .Current .BeamList .Current .BottomJawPosition.Value;
+//WarningMessage = "Viene la cunya";
+
+Store.StringAt.wedgetype = TrialList .Current .BeamList .Current .WedgeContext.WedgeName.Value;
+//WarningMessage = Store.At.wedgetype.Value;
+
+Store.StringAt.wedgeorientation = TrialList .Current .BeamList .Current .WedgeContext.Orientation.Value;
+//WarningMessage = Store.At.wedgeorientation.Value;
+
+Store.StringAt.wedgeang = TrialList .Current .BeamList .Current .WedgeAngle.Value;
+//WarningMessage = Store.At.wedgeangle.Value;
+
+Store.StringAt.wedgeang2 = TrialList .Current .BeamList .Current. CPManager .SynthesizedWedgeAngle.Value;
+
+Store.StringAt.ssd_beam = TrialList.Current.BeamList.Current.SSD.Value;
+//Store.StringAt.profundidad = TrialList.Current.BeamList.Current.MonitorUnitInfo.PrescriptionPointRadDepth.Value;
+Store.StringAt.profundidad = TrialList.Current.BeamList.Current.MonitorUnitInfo.RadDepthToActualPoint.Value;
+
+Store.StringAt.um = TrialList.Current.BeamList.Current.MonitorUnits;
+
+//Exportacion de la dosis de referencia
+Store.StringAt.dosisreferencia = TrialList. Current. BeamList.Current. MonitorUnitInfo. PrescriptionDose.String;
+//WarningMessage = Store.At.dosisreferencia.Value;
+
+Store.StringAt.campocoll = TrialList. Current. BeamList.Current. MonitorUnitInfo. UnblockedFieldAreaAtSAD.String;
+//WarningMessage = Store.At.dosisreferencia.Value;
+
+Store.StringAt.campobloq = TrialList. Current. BeamList.Current. MonitorUnitInfo. BlockedFieldAreaAtSAD.String;
+//WarningMessage = Store.At.dosisreferencia.Value;
+
+Store.StringAt.prescripsesions = TrialList.Current.BeamList.Current.Prescription .NumberOfFractions.String;
+Store.StringAt.prescripdose = TrialList.Current.BeamList.Current.Prescription .PrescriptionDose.String;
+//WarningMessage = Store.At.prescripName.Value;
+
+// Unidades de monitor para cunyas del Synergy
+Store.StringAt.muwedgewdg=0;
+Store.StringAt.muwedgeopen=1;
+Store.StringAt.muwedgewdg = TrialList .Current .BeamList .Current .CPManager .ControlPointList .#"#0" .Weight;
+Store.StringAt.muwedgeopen = TrialList .Current .BeamList .Current .CPManager .ControlPointList .#"#1" .Weight;
+
+
+//WarningMessage = TrialList.Current.BeamList.Current.Prescription .NumberOfFractions.String;
+//WarningMessage = TrialList.Current.BeamList.Current.Prescription .PrescriptionDose.String;
+//WarningMessage = TrialList.Current.BeamList.Current.Prescription .Method.Value;
+
+
+
+
+
+//Store.FloatAt.peso = TrialList.Current.BeamList.Current.Weight.Value;
+// Concatenar los datos
+
+Store.At.DatosCampo.AppendString = Store.StringAt.nombreCampo.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.tipoCampo.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.nombreale.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.energia.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.prescripName.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.isocentro.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.gantryangle.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.gantryanglestop.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.collangle.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.couchangle.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.y1.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.y2.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.x1.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.x2.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.wedgetype.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.wedgeorientation.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.wedgeang.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.wedgeang2.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.ssd_beam.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.profundidad.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.um.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.dosisreferencia.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.campocoll.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.campobloq.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.prescripsesions.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.prescripdose.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.prescrippoint.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.muwedgewdg.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = Store.StringAt.muwedgeopen.Value;
+Store.At.DatosCampo.AppendString = "*";
+Store.At.DatosCampo.AppendString = " -EOL-";
+
+
+//WarningMessage = Store.At.DatosCampo.Value;
+//--- Guardamos los datos
+//Store.StringAt.MySaveFile.1="/home/p3rtp/Gammex/AADatosHaces";
+//Store.At.MySaveFile1.AppendString = PlanInfo.MedicalRecordNumber;
+//Store.At.MySaveFile1.AppendString = ".txt";
+
+Store.At.DatosCampo.Save= "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt";
+SpawnCommand = "cat  /usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosUnHaz.txt >> //usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt";
+
+
+//Store.FreeAt.EchoCommand = "";
+//Store.StringAt.EchoCommand = "echo ";
+//Store.At.EchoCommand.AppendString = Store.StringAt.DatosCampo.Value;
+//Store.At.EchoCommand.AppendString = " >> ";
+//Store.At.EchoCommand.AppendString = "/home/p3rtp/Gammex/test.txt";
+//WarningMessage = Store.At.EchoCommand.Value;
+//SpawnCommand = Store.At.EchoCommand.Value;
+//Store.FreeAt.EchoCommand = "";
+
+
+

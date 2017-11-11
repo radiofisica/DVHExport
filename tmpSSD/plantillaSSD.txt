@@ -1,0 +1,9 @@
+// 
+Store.StringAt.SSDtmp = SimpleString{};
+Store.At.SSDtmp.String = TrialList.Current.QABeamList.SetupBeam2.SSD;
+//WarningMessage = Store.At.SSDtmp.String;
+Store.At.SSDtmp.Save = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/SSDtmp0.txt";
+// Y ahora concatenamos el store con los datos anteriores
+SpawnCommand =Store.At.ConcatenarSSD.String;
+//
+//

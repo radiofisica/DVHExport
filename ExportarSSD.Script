@@ -1,0 +1,39 @@
+// Proposito: exportar la SSD para la colocacion del paciente
+// Autor: APerezRozos 
+// Fecha: Julio 2007
+// 
+// Abrimos la ventana de EvalDRR y si el paciente esta en prono
+// Se ajusta la orientacion del cmapo a cero grados
+
+TrialList .Current .PlanEvalDRRSetup = "Plan Eval DRRs...";
+TrialList .Current .SetupBeamIsocenterName = "0TAC";
+TrialList .Current .SetupBeamMachineName = "CLINAC600C";
+TrialList .Current .PlanEvalDRR = "Plan Eval DRRs..";
+
+
+WindowList .OrthoDRRs .Create = "Plan Eval DRRs...";
+WaitMessage = "Espere, exportando DFSa0";
+Store.At.Posicion=SimpleString{};
+Store.At.Posicion.String = "On front (prone)";
+IF.PatientSetup.Position.STRINGEQUALTO.Store.At.Posicion.String.THEN.TrialList .#"#0" .QABeamList .SetupBeam2 .StandardOrientation = "Posterior";
+// Borramos datos antiguos residuales
+Store.At.BorrarSSDFile = SimpleString{};
+Store.At.BorrarSSDFile.String = "rm /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/SSDFile.txt";
+SpawnCommand = Store.At.BorrarSSDFile.String;
+Store.At.ConcatenarSSD = SimpleString{};
+Store.At.ConcatenarSSD.String = "cat /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/SSDtmp0.txt >> /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/SSDFile.txt";
+// Ahora iniciamos el ciclo de exportacion de las distancias
+//
+PoiList .Save = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/PoiList.txt";
+SpawnCommand = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/buildSSDScript";
+Script.ExecuteNow = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/SSDExport.Script.auto";
+SpawnCommand = "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpSSD/buildSSD2Script";
+// Ahora copiamos los datos al directorio de exportacion
+
+Store.At.Command = SimpleString{};
+Store.At.Command.String = "cp /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/ListaSSD.txt /home/pinnmalaga/PRESCRIPCIONES/SSD";
+Store.At.Command.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.Command.AppendString = ".txt";
+SpawnCommand = Store.At.Command.String;
+WaitMessageOff = "";
+WindowList .OrthoDRRs .Destroy = "";

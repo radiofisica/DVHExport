@@ -1,0 +1,43 @@
+// -------------------------------------------------------
+// APerezRozos
+// 2013 Exportacion de planes 3D, IMRT y arcos
+// -------------------------------------------------------
+//Exportamos los datos de los campos de IMRT o generales
+// (Migrado a PinnCentralizado 2017.09.25)
+// -------------------------------------------------------
+
+// 1. Llamamos al script ExportaHacesInicio.Script que es el que inicia la exportacion de datos de campos
+
+Script.ExecuteNow = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/ExportaHacesInicio.Script";
+
+// Los datos de los campos ya estan guardados.
+// -------------------------------------------------------
+
+// 2. Ahora se exportaran los puntos y distancias a 0 grados para generar ficha setup
+
+// 2a. Guarda los puntos
+Store.At.Command = SimpleString{};
+Store.At.Command.String = "/home/pinnmalaga/PRESCRIPCIONES/p";
+Store.At.Command.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.Command.AppendString = ".txt";
+PoiList .Save = Store.At.Command.String;
+
+// 2b. Exporta las distancias de colocacion a cero grados
+
+Script.ExecuteNow = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/ExportarSSD.Script";
+
+// 3. Guarda todos los datos del TRIAL
+
+Store.At.Command = SimpleString{};
+Store.At.Command.String = "/home/pinnmalaga/PRESCRIPCIONES/t";
+Store.At.Command.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.Command.AppendString = ".txt";
+TrialList.Current.Save = Store.At.Command.String;
+
+// 4. Ahora borra los archivos no necesarios
+Store.At.MyBorrar=SimpleString{};
+Store.At.MyBorrar.String = "rm /home/pinnmalaga/PRESCRIPCIONES/t";
+Store.At.MyBorrar.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.MyBorrar.AppendString = ".txt.binary*";
+SpawnCommand = Store.At.MyBorrar.String;
+

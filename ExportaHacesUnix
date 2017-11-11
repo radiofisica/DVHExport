@@ -1,0 +1,11 @@
+#!/bin/csh
+# Export beams
+# Aperezrozos 08.2013
+
+set outScript = "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AAAdatos.txt"
+set Import = "/usr/local/PinnacleSiteData/clinical/Scripts/MAVV/tmpRV/AADatosHaces.txt"
+
+cat $Import | grep String | cut -f2 -d\" >> $outScript
+
+
+rm $Import

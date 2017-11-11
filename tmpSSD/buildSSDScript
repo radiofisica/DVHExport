@@ -1,0 +1,34 @@
+#!/bin/csh
+# Exportar las distancias SSD a cero grados
+# APerezRozos Julio 2007
+
+set outScript = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/SSDExport.Script.auto"
+set Import = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/PoiList.txt"
+set Pfad = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD"
+
+# delete old Data
+# if (-e $Pfad/PoiList.txt ) rm $Pfad/PoiList.txt
+if (-e $outScript ) rm $outScript
+
+# 
+# 
+
+
+#find Number of ROI
+@ Anzahl = `grep -c ' Name' $Import`
+
+
+# 
+#
+# 
+
+while ($Anzahl > 0)
+	
+	@ Anzahl--
+#       
+        echo ' TrialList. Current.QABeamList.#"#1".Isocenter = PoiList.#"#'$Anzahl'".Name;' >> $outScript
+        cat /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpSSD/plantillaSSD.txt >> $outScript
+end
+
+
+rm $Import
