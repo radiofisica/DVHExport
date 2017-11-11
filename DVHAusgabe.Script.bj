@@ -1,0 +1,43 @@
+// --------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------
+// v20171110
+// Se actualiza la documentacion al pasar los scripts al servidor centralizado de Pinnacle SAS
+// --------------------------------------------------------------------------------------------
+// A. Perez-Rozos 
+// --------------------------------------------------------------------------------------------
+// Script basado en scripts previos de Bjorne Riis
+// --------------------------------------------------------------------------------------------
+
+// 1. Se guarda el listado de volumenes activados en la lista de HDVs en DVH.txt
+
+WaitMessage = " writing DVH";
+DVHList.Save = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.txt";
+WaitMessageOff = "";
+
+// 2. Se construye el script personalizado para la lista anterior llamando al script Unix buildDVHScript
+
+WaitMessage = " building DVH Data Script";
+SpawnCommand = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/buildDVHScript";
+WaitMessageOff = "";
+
+// 3. Se ejecuta el script personalizado que es el que exporta los datos del HDV y los guarda en un directorio temporal
+
+WaitMessage = " writing DVH Data";
+Script.ExecuteNow = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/DVHExport.Script.auto" ;
+WaitMessageOff = "";
+
+// 4. ahora copiamos los archivos al directorio PRESCRIPCIONES en la carpeta de usuario pinnmalaga
+// si se desea usar en otro usuario debera personalizarse
+
+Store.At.Command = SimpleString{};
+Store.At.Command2 = SimpleString{};
+Store.At.Command2.String = "mkdir /home/pinnmalaga/PRESCRIPCIONES/";
+Store.At.Command2.AppendString = PlanInfo.MedicalRecordNumber;
+SpawnCommand = Store.At.Command2.String;
+Store.At.Command.String = "cp /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/* /home/pinnmalaga/PRESCRIPCIONES/";
+Store.At.Command.AppendString = PlanInfo.MedicalRecordNumber;
+Store.At.Command.AppendString = "/";
+SpawnCommand = Store.At.Command.String;
+WarningMessage = Store.At.Command.String;
+
+// Fin del script

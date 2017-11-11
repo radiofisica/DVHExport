@@ -1,0 +1,45 @@
+#!/bin/csh
+# DVH Ausgabe
+# Bj 03.2005
+
+set outScript = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/DVHExport.Script.auto"
+set Import = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.txt"
+set Pfad = "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp"
+
+# delete old Data
+ if (-e $Pfad/DVH.Data.0.txt ) rm $Pfad/DVH.Data*
+#if (-e $Pfad/DVH.Data.0.txt ) rm $Pfad/DVH*
+if (-e $outScript ) rm $outScript
+
+# List of ROI Names
+# cat $Import | grep RegionOfInterestName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Name.csv
+cat $Import | grep RegionOfInterestName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Name.txt
+
+# Liste der Trial Namen
+# cat $Import | grep TrialName | cut -f2 -d\" > //usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/Trial.Name.csv
+cat $Import | grep TrialName | cut -f2 -d\" > /usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/Trial.Name.txt
+
+
+
+#find Number of ROI
+@ Anzahl = `grep -c RegionOfInterestName $Import`
+
+
+# write outputscript
+
+echo "DVHPlotStyle .CumulativeY = 1 ;" > $outScript
+echo "DVHPlotStyle .NormalizeX = 0;" > $outScript
+echo "DVHList .Current .AutoComputeMaxDose = 1;" > $outScript
+
+
+while ($Anzahl > 0)
+	
+	@ Anzahl--
+	echo " DVHList.Current = $Anzahl ;" >> $outScript
+	echo ' DVHList .Current .NumberOfBins = "200" ;' >> $outScript
+#	echo ' DVHList.Current.Data.Save =  "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Data.'$Anzahl'.csv" ;' >> $outScript
+        echo ' DVHList.Current.Data.Save =  "/usr/local/adacnew/PinnacleSiteData/Scripts/MAVV/tmpDVH/tmp/DVH.Data.'$Anzahl'.txt" ;' >> $outScript
+end
+
+
+rm $Import
